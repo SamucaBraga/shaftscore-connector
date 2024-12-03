@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MQTT WebSocket Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/mqtt/dist/mqtt.min.js"></script>
+  </head>
+  <body>
+    <h1>MQTT WebSocket Test</h1>
+    <button onclick="subscribeToTopic()">Subscribe to Football Topic</button>
+    <div id="status"></div>
+
+    <script>
+      const username = "aggiomkt";
+      const password = "7e8a771c19341c2f9bbe2ca92581db06";
+      // const brokerUrl = `wss://mq.thesports.com`;
+      const brokerUrl = `wss://mq.thesports01.com/mqtt`;
+
+      // Create an MQTT client instance for WebSocket
+      const client = mqtt.connect(brokerUrl, {
+        username: username,
+        password: password,
+        protocol: "wss",
+        tls: true,
+        reconnectPeriod: 1000, // Reconnect every second if disconnected
+        rejectUnauthorized: false, // If needed, set to false for self-signed certificates
+      });
+
+      // Set up client event handlers
+      client.on("connect", function () {
+        document.getElementById("status").innerText =
+          "Connected to MQTT Broker";
+        console.log("Connected to MQTT Broker");
+      });
+
+      client.on("error", function (err) {
+        console.error("MQTT connection error:", err);
+        document.getElementById("status").innerText = "Connection Error";
+      });
+
+      // Handle incoming messages
+      client.on("message", function (topic, message) {
+        console.log(`Received message on topic ${topic}:`, message.toString());
+      });
+
+      // Function to subscribe to a topic
+      function subscribeToTopic() {
+        // const topic = "sports/football"; // Example topic
+        // const topic = "sports/football/live"; // Example topic
+        const topic = "football/table/live"; // Example topic
+        console.log(`Subscribing to ${topic}`);
+        client.subscribe(topic, function (err) {
+          if (err) {
+            console.error(`Failed to subscribe to ${topic}:`, err);
+          } else {
+            console.log(`Subscribed to ${topic}`);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
