@@ -1,11 +1,11 @@
 {
   "name": "connector",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/index.ts",
-    "start": "node build/index.js",
+    "dev": "tsx watch src/server.ts",
+    "start": "node build/server.js",
     "postinstall": "npm run build",
     "build": "tsup --out-dir build"
   },
@@ -14,9 +14,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
     "fastify": "^5.1.0",
-    "mqtt": "^5.10.3"
+    "ky": "^1.7.2",
+    "mqtt": "^5.10.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "tsup": "^8.3.5",
